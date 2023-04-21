@@ -1,5 +1,4 @@
-FROM alpine:3.14
-# Comment
-RUN echo 'we are running some # of cool things'
-CMD ["npm", "start"]
+FROM node:18-alpine
+RUN yarn install --production
+CMD ["node", "index.js"]
 EXPOSE 80
