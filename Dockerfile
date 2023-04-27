@@ -1,4 +1,7 @@
 FROM node:18-alpine
-RUN yarn install --production
-CMD ["node", "index.js"]
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install --only=production
+COPY . ./
+CMD [ "node", "index.js" ]
 EXPOSE 80
