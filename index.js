@@ -22,7 +22,7 @@ app.get('/netease-game-club', (req, res) => {
 
 //webhook
 app.post('/adyen/notify',(req,res) =>{
-     console.log(req.body);
+     console.log(JSON.parse(req.body));
      res.send("[accepted]" );
 })
 
