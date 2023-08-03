@@ -46,7 +46,7 @@ app.post('/adyen/notify',(req,res) =>{
 
 // show the logs
 app.get('/translogs',(req,res) =>{
-  truncateFile(__dirname + "/views/logs/transactionEvents.log");
+  // truncateFile(__dirname + "/views/logs/transactionEvents.log");
   fs.readFile(__dirname + "/views/logs/transactionEvents.log", 'utf8', function(err, data){
     res.render('logs/logPage',{ data : data });
     // Display the file content
@@ -55,7 +55,7 @@ app.get('/translogs',(req,res) =>{
 })
 
 app.get('/disputelogs',(req,res) =>{
-  truncateFile(__dirname + "/views/logs/disputeEvents.log");
+  // truncateFile(__dirname + "/views/logs/disputeEvents.log");
   fs.readFile(__dirname + "/views/logs/disputeEvents.log", 'utf8', function(err, data){
     res.render('logs/logPage',{ data : data });
     // Display the file content
@@ -64,7 +64,7 @@ app.get('/disputelogs',(req,res) =>{
 })
 
 app.get('/payoutlogs',(req,res) =>{
-  truncateFile(__dirname + "/views/logs/payoutEvents.log");
+  // truncateFile(__dirname + "/views/logs/payoutEvents.log");
   fs.readFile(__dirname + "/views/logs/payoutEvents.log", 'utf8', function(err, data){
     res.render('logs/logPage',{ data : data });
     // Display the file content
@@ -73,7 +73,7 @@ app.get('/payoutlogs',(req,res) =>{
 })
 
 app.get('/otherlogs',(req,res) =>{
-  truncateFile(__dirname + "/views/logs/otherEvents.log");
+  // truncateFile(__dirname + "/views/logs/otherEvents.log");
   fs.readFile(__dirname + "/views/logs/otherEvents.log", 'utf8', function(err, data){
     res.render('logs/logPage',{ data : data });
     // Display the file content
@@ -117,7 +117,7 @@ function checkIfIsPayoutEvent(event){
 
 function writeToLogs(path, data){
           //write log files
-          fs.appendFile(path, JSON.stringify(data, null, 4)+",\r\n", function (err) {
+          fs.write(path, JSON.stringify(data, null, 4)+",\r\n", function (err) {
             if (err) throw err;
             console.log('Webhook message has been saved to log file');
           });
