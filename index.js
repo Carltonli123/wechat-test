@@ -5,7 +5,7 @@ const port = 80
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
-  res.send('Hello World! Welcome to Adyen\'s wechat portal! it will be modified today!')
+  res.send('Hello World! Welcome to Adyen\'s wechat portal!')
 })
 
 app.listen(port, () => {
