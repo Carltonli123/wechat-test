@@ -28,6 +28,8 @@ app.get('/netease-game-club', (req, res) => {
 //webhook
 app.post('/adyen/notify',(req,res) =>{
 
+     console.log(JSON.stringify(req.body, null, 4)+",\r\n")
+
      if(checkIfIsTransEvent(req.body.notificationItems[0].NotificationRequestItem.eventCode)){
          writeToLogs(__dirname + "/views/logs/transactionEvents.log",req.body);
      }else if(checkIfIsDisputeEvent(req.body.notificationItems[0].NotificationRequestItem.eventCode)){
@@ -115,7 +117,7 @@ function checkIfIsPayoutEvent(event){
 
 function writeToLogs(path, data){
           //write log files
-          fs.appendFile(path, JSON.stringify(data, null, 4)+"\r\n\r\n\r\n\r\n\r\n", function (err) {
+          fs.appendFile(path, JSON.stringify(data, null, 4)+",\r\n", function (err) {
             if (err) throw err;
             console.log('Webhook message has been saved to log file');
           });
