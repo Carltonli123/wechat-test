@@ -117,7 +117,7 @@ function checkIfIsPayoutEvent(event){
 
 function writeToLogs(path, data){
           //write log files
-          fs.write(path, JSON.stringify(data, null, 4)+",\r\n", function (err) {
+          fs.writeFile(path, JSON.stringify(data, null, 4), function (err) {
             if (err) throw err;
             console.log('Webhook message has been saved to log file');
           });
