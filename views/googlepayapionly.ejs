@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GooglePay api-only</title>
+    <script async src="https://pay.google.com/gp/p/js/pay.js" onload="console.log('TODO: add onload function');GooglePayOnLoad()">
+    </script>
+    <script>
+        function GooglePayOnLoad(){
+            console.log("Googlepay has been loaded.");
+
+            const baseRequest = {
+                apiVersion: 2,
+                apiVersionMinor: 0
+            };
+
+            const tokenizationSpecification = {
+                type: 'PAYMENT_GATEWAY',
+                parameters: {
+                    'gateway': 'adyen',
+                    'gatewayMerchantId': 'AdyenTechSupport_CarltonTest_TEST'
+                }
+            };
+
+            const allowedCardNetworks = ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"];
+
+            const allowedCardAuthMethods = ["PAN_ONLY", "CRYPTOGRAM_3DS"];
+
+            const baseCardPaymentMethod = {
+                type: 'CARD',
+                parameters: {
+                    allowedAuthMethods: allowedCardAuthMethods,
+                    allowedCardNetworks: allowedCardNetworks
+                }
+            };
+
+            const cardPaymentMethod = Object.assign(
+                { tokenizationSpecification: tokenizationSpecification },
+                baseCardPaymentMethod
+            );
+
+            const paymentsClient =
+                new google.payments.api.PaymentsClient({ environment: 'TEST' });
+
+            const isReadyToPayRequest = Object.assign({}, baseRequest);
+            isReadyToPayRequest.allowedPaymentMethods = [baseCardPaymentMethod];
+
+            
+            const paymentDataRequest = Object.assign({}, baseRequest);
+            paymentDataRequest.allowedPaymentMethods = [cardPaymentMethod];
+
+            paymentDataRequest.transactionInfo = {
+                totalPriceStatus: 'FINAL',
+                totalPrice: '123.45',
+                currencyCode: 'USD',
+                countryCode: 'US'
+            };
+
+            paymentDataRequest.merchantInfo = {
+                merchantName: 'Carlton\'s shop',
+                merchantId: 'BCR2DN4TZ354HETP'
+            };
+
+            paymentsClient.isReadyToPay(isReadyToPayRequest)
+                .then(function (response) {
+                    if (response.result) {
+                        // add a Google Pay payment button
+                        const button =
+                        paymentsClient.createButton({
+                            onClick: () => {
+                                console.log('TODO: click handler');
+                                paymentsClient.loadPaymentData(paymentDataRequest).then(function (paymentData) {
+                                    // if using gateway tokenization, pass this token without modification
+                                    paymentToken = paymentData.paymentMethodData.tokenizationData.token;
+                                    console.log("below is the payment token");
+                                    console.log(JSON.stringify(paymentToken));
+
+                                    var myHeaders = new Headers();
+                                    myHeaders.append("x-API-key", "AQEyhmfxLorGaRxCw0m/n3Q5qf3VaY9UCJ1+XWZe9W27jmlZig5yljrb4hAKiRMRHKZD1gEQwV1bDb7kfNy1WIxIIkxgBw==-LkkZe9+JfR2vz39IxgEUX0nssD5NDktbGfH31I0GoM0=-L&GCzb9tnt#Z#jXm");
+                                    myHeaders.append("content-type", "application/json");
+
+                                    var paymentBody = new Object();
+                                    paymentBody.amount = {
+                                        "value": 700,
+                                        "currency": "USD"
+                                    };
+                                    paymentBody.paymentMethod = {};
+                                    paymentBody.paymentMethod.type = "googlepay";
+                                    paymentBody.paymentMethod.googlePayToken = paymentToken;
+                                    paymentBody.paymentMethod.googlePayCardNetwork = "VISA";
+
+                                    paymentBody.reference = "order reference";
+                                    paymentBody.merchantAccount = "AdyenTechSupport_CarltonTest_TEST";
+                                    paymentBody.returnUrl = "https://www.baidu.com";
+
+                                    var requestOptions = {
+                                        method: 'POST',
+                                        headers: myHeaders,
+                                        body: JSON.stringify(paymentBody),
+                                        redirect: 'follow'
+                                    };
+
+                                        fetch("http://localhost:80/payments", requestOptions)
+                                        .then(response => response.text())
+                                        .then(result => console.log(result))
+                                        .catch(error => console.log('error', error));
+                                }).catch(function (err) {
+                                    // show error in developer console for debugging
+                                    console.error(err);
+                                });
+                            },
+                            allowedPaymentMethods: []
+                        }); // same payment methods as for the loadPaymentData() API call
+                        document.getElementById('container').appendChild(button);
+                    };
+                    
+
+                })
+                .catch(function (err) {
+                    // show error in developer console for debugging
+                    console.error(err);
+                });
+
+        }
+    </script>
+</head>
+<body>
+    <div id="container" hidden></div>
+    <button onclick="selfButtonClicked()">Submit: Pay with Google</button>
+</body>
+<script>
+    function selfButtonClicked(){
+        var googlePayButton = document.getElementById('container').children[0].children[0];
+        googlePayButton.click();
+    }
+</script>
+</html>

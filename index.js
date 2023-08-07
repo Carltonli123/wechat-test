@@ -86,6 +86,22 @@ app.get('/adyen/notify',(req,res) =>{
   res.send('the webhook is working');
 })
 
+//googlepay page
+app.get('/pm/googlepay',(req,res) =>{
+  res.render('neteast-game-club/googlepay');
+})
+
+app.get('/googlepay-apionly', (req,res) =>{
+  res.render('googlepayapionly');
+})
+
+app.get('/googlepay-component', (req, res) => {
+  res.render('googlepaycomponent');
+})
+
+var payments = require("./routes/payments");
+app.use(payments);
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

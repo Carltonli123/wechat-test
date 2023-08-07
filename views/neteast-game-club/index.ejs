@@ -4,10 +4,166 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to NetEase</title>
+    <script src="https://pay.google.com/gp/p/js/pay.js"></script>
+    <script src="https://checkoutshopper-live.adyen.com/checkoutshopper/sdk/5.33.0/adyen.js"
+    integrity="sha384-mPMlkgVUT7jVJZT0sTSfe+M4uN1ArRf1Itg76PcI6Y+zPLDvjCnjmAyyjtak3269"
+    crossorigin="anonymous"></script>
+
+    <link rel="stylesheet"
+    href="https://checkoutshopper-live.adyen.com/checkoutshopper/sdk/5.33.0/adyen.css"
+    integrity="sha384-86hqIixzFjIoRoaNYg9pd4mtpn3HtgJmrpYiyTv+3DaGPF70VnRUbtK7MKLTLRd9"
+    crossorigin="anonymous">
+
+  
 </head>
 <body>
 
     <h1>Welcome to NetEase</h1>
     <p>Please select your payment method:</p>
+
+    <form id="frm1">
+        <input type="radio" id="googlepay" name="paymentMethod" value="googlepay">
+        <label for="googlepay"><div id="googlepay-container">GooglePay</div></label><br>
+        <input type="radio" id="applepay" name="paymentMethod" value="applepay">
+        <label for="applepay"><div id="applepay-container">ApplePay</div></label><br>  
+        <input type="radio" id="amazonpay" name="paymentMethod" value="amazonpay">
+        <label for="amazonpay"><div id="amazon-container">AmazonPay</div></label><br>
+    </form>
+    <button onclick="InitPMRequest()">Submit</button>
+
+    <!-- <p>GooglePay:</p>
+    <a href="/pm/googlepay">
+        <img src="https://checkoutshopper-live.adyen.com/checkoutshopper/images/logos/googlepay.svg" alt="Google Pay" width="200" height="60">
+    </a> -->
+
 </body>
+
+
+<script>
+
+  
+  async function initiateComponent() {
+
+ const configuration = {
+         showPayButton: true,
+         locale: "en-US",
+         environment: 'TEST', // Google Pay environment
+         clientKey: 'test_CHSGAF73YRAN3I6TDVGQSQVO4ETBP75D', 
+        //  session: {
+        //     id: 'CS15E3EACEDD471F7A', // Unique identifier for the payment session.
+        //     sessionData: 'Ab02b4c0!BQABAgBcrwdijMAaxy3HYf0wq2x/sp2knb2pQikjRC1OWNKmi6VWDcGLN0qU595rrFcYd1psgC04oPtmc1uiofzMcd5jm1o5qLJZcXsLO9Km2DFWJC1sITB82I3Pnv3pVVTIqusjhy1XQd0LvPn8tSrofIqa1DKslSiq9owNja+wfWJMCgDpG+k0QmMejvUMHMTAAqrCyL5+Sq1Iq+Z+0cCtFEPJZOs2i8u9WxPVkUus5yADT98EQWVaVlxJt8tL7SSaTwu8on91ZktbIc8USFRZfTkIXZ/a80R5X1vCsazo91KxSD3/nvLRfcmwlp3DpxCnUSK/bbVxcChTyNwNDW1PNNIN7LQeWYDMU9ESbdt2snf8thaW2LOXlod1/XR93SlewvveQVTd6SHMALdGYblX88cidXFqPh3eU6IN37d4ql33Osf92DBnpQAefHFLXhpJLBiCksVX7lyZtvbSnT8c7pvy1irryLKmWX0md1ZWkM1+gl3+W1/nTzCQvyeAmOPIcYD+Qw9dbauyPkSCr/jCz+1aekUzOWZi3FiMDmP5aG/I7Bt6cXlALcEMJyqKYMRTdHDqcHEvEpcGrTujA0/9m8cXZbch/siA0kchIC5G4khmqDnmkIUIyDxhPuah9plH5zemFmINQcmCVCiHt3aB8k1gfTbpzisQ6KmqJdvcpTguWQzDu31LlZWqirfrFHMASnsia2V5IjoiQUYwQUFBMTAzQ0E1MzdFQUVEODdDMjRERDUzOTA5QjgwQTc4QTkyM0UzODIzRDY4REFDQzk0QjlGRjgzMDVEQyJ9cBglGJWDMtjgEyomAW2PQbzQTloGppmCLSBSqzrToWfxXOWWXTWzdC+2Cu79tNPl2NbJtDCSiukE+yJcjz7ak1mK5H/yhlTWngWKXSUJNC4q8mJZX14TxGvKGJ5HgTxc/CY8CVdjOfyzqlhDCpT2myQU93eaicZ8pqD/l2HIPVurcrFEVXmYlY+fcW2Ewc0TpKiuHpLKtdhrlI4wgW0PaRuhwpJRYAjmKc1GS+53Twr/J0Q5Vg1RjOUIDDNcapoLmPBQyc/oYmuJ2cQki9Du+1X9NMzHt4AobbXDEr41zxmOf5B2rP9hHkM4kxAqq6Kildr2OUC/RZZDrxOI13EJeMQSpDTfLo38bfPqfdlNLfHi9EluNLsrCylGWT9jtNn1nUfzdYeOGSubf6MHp7rtDJIrgz4OntwINooDS57P7NIhpPs7GkK5WJyvrOHu5/nj+M/JbU33jcSg2gw4tpkfAAtAyIvtgHBxgg8niUrJF+JbvhuIr2G5191NwAX0gsR3g+g/X61CpQn/PZVQJ6NIAH4G8dR4wBovJQwvLtrcSpM+uhLYsrsR8q8vX+AFNqvlVFCk+3V66k2txs0RlLWzAQ=='
+        //  },
+         configuration: {
+             gatewayMerchantId: 'AdyenTechSupport_CarltonTest_TEST', // name of your Adyen Merchant account
+             merchantName: 'CarltonShop' // Name to be shown
+             // merchantIdentifier: '' // Required in Production environment. Google's merchantId: https://developers.google.com/pay/api/web/guides/test-and-deploy/deploy-production-environment#obtain-your-merchantID
+         },
+
+         // Events
+         onSubmit: (state, component) => {
+             // Submit Payment
+             console.log(state.data);
+
+         
+             var paymentBody = new Object();
+
+
+
+             var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+                myHeaders.append("X-API-Key", "AQEyhmfxLorGaRxCw0m/n3Q5qf3VaY9UCJ1+XWZe9W27jmlZig5yljrb4hAKiRMRHKZD1gEQwV1bDb7kfNy1WIxIIkxgBw==-IuMYHQhMEAfxSLsqFoYmmXtqzsf1t2SkYYk+VbCSJt8=-ezDyzfvKK$YX764R");
+
+
+                if(state.data.paymentMethod.storedPaymentMethodId){
+            console.log("this is a store payment method");
+                paymentBody.shopperInteraction = "ContAuth";
+            }else{
+            console.log("this is a non token payment method");
+                paymentBody.shopperInteraction = "Ecommerce";
+            }
+             
+         paymentBody.amount = {
+            "value":700,
+            "currency":"USD"
+         };
+
+         paymentBody.paymentMethod = state.data.paymentMethod;
+
+         paymentBody.reference = "order reference";
+         paymentBody.merchantAccount = "AdyenTechSupport_CarltonTest_TEST";
+         paymentBody.returnUrl = "http://localhost:80/finish";   
+
+         
+         var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body:JSON.stringify(paymentBody),
+            redirect: 'follow'
+         };
+
+         fetch("http://localhost:80/payments", requestOptions)
+            .then(response => {
+              
+              return response.text();
+              
+            })
+            .then(result => {
+          
+              console.log(typeof(result));
+              var resultData = JSON.parse(result);
+              console.log(resultData.resultCode);
+
+      
+            })
+
+             // updateStateContainer(state); // Demo purposes only
+         },
+         onError: error => {
+             console.error(error);
+         },
+         onPaymentCompleted: (result, component) => {
+            console.log('You have succesfully made a googlepay payment');
+            console.log('below is for onPaymentCompleted:');
+            console.info(result, component);
+        },
+     };
+ // 1. Create an instance of AdyenCheckout
+ const checkout = await AdyenCheckout(configuration);
+
+ // 2. Create and mount the Component
+ const googlepayComponent = checkout
+     .create('googlepay',{
+        onAuthorized:(data) => {
+            console.log("it has been authorized");
+            console.log(data);
+          }
+     })
+     // Normally, you should check if Google Pay is available before mounting it.
+     // Here we are mounting it directly for demo purposes.
+     // Please refer to the documentation for more information on Google Pay's availability.
+     .mount('#googlepay-container');
+     
+     };
+     initiateComponent();
+ </script>
+
+
+<script>
+    function InitPMRequest(){
+        var myForm = document.getElementsByName("paymentMethod");
+        for (let index = 0; index < myForm.length; index++) {
+           if(myForm[index].checked){
+               console.log(myForm[index].value);
+               if(myForm[index].value == "googlepay"){
+                var googlepayComponent = document.getElementById("googlepay");
+                console.log(googlepayComponent);
+                googlepayComponent.submit();
+               }
+           }
+            
+        }
+    }
+</script>
+
+
 </html>

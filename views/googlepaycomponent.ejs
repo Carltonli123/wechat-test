@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GooglePay Component</title>
+    <script src="https://checkoutshopper-live.adyen.com/checkoutshopper/sdk/5.33.0/adyen.js"
+        integrity="sha384-mPMlkgVUT7jVJZT0sTSfe+M4uN1ArRf1Itg76PcI6Y+zPLDvjCnjmAyyjtak3269"
+        crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="https://checkoutshopper-live.adyen.com/checkoutshopper/sdk/5.33.0/adyen.css"
+        integrity="sha384-86hqIixzFjIoRoaNYg9pd4mtpn3HtgJmrpYiyTv+3DaGPF70VnRUbtK7MKLTLRd9" crossorigin="anonymous">
+    <script src="https://pay.google.com/gp/p/js/pay.js"></script>
+</head>
+<body>
+    <div id="googlepay-container"></div>
+    <button id="selfButton">Submit: Pay with Google</button>
+</body>
+<script>
+
+    const configuration = {
+        showPayButton: false,
+        environment: 'test', // Change to 'live' for the live environment.
+        clientKey: 'test_CHSGAF73YRAN3I6TDVGQSQVO4ETBP75D', // Public key used for client-side authentication: https://docs.adyen.com/development-resources/client-side-authentication
+        analytics: {
+            enabled: true // Set to false to not send analytics data to Adyen.
+        },
+        onSubmit: (state, component) => {
+            console.log(state);
+
+            var paymentBody = new Object();
+
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("X-API-Key", "AQEyhmfxLorGaRxCw0m/n3Q5qf3VaY9UCJ1+XWZe9W27jmlZig5yljrb4hAKiRMRHKZD1gEQwV1bDb7kfNy1WIxIIkxgBw==-IuMYHQhMEAfxSLsqFoYmmXtqzsf1t2SkYYk+VbCSJt8=-ezDyzfvKK$YX764R");
+
+            paymentBody.amount = {
+                "value": 700,
+                "currency": "USD"
+            };
+
+            paymentBody.paymentMethod = state.data.paymentMethod;
+            paymentBody.browserInfo = state.data.browserInfo;
+
+            paymentBody.reference = "order reference";
+            paymentBody.merchantAccount = "AdyenTechSupport_CarltonTest_TEST";
+            paymentBody.returnUrl = "https://www.baidu.com";
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: JSON.stringify(paymentBody),
+                redirect: 'follow'
+            };
+
+            fetch("http://localhost:80/payments", requestOptions)
+                .then(response => response.text())
+                .then(result => console.log(result))
+                .catch(error => console.log('error', error));
+        },
+        onPaymentCompleted: (result, component) => {
+            console.info(result, component);
+        },
+        onError: (error, component) => {
+            console.error(error.name, error.message, error.stack, component);
+        },
+        // Any payment method specific configuration. Find the configuration specific to each payment method:  https://docs.adyen.com/payment-methods
+        // For example, this is 3D Secure configuration for cards:
+        paymentMethodsConfiguration: {}
+    };
+
+
+    async function createCheckout() {
+        const checkout = await AdyenCheckout(configuration);
+        const googlePayComponent = checkout.create('googlepay',{
+            configuration: {
+            gatewayMerchantId: 'AdyenTechSupport_CarltonTest_TEST', // name of your Adyen Merchant account
+            merchantName: 'Carlton\'s shop' // Name to be shown
+            // merchantIdentifier: '' // Required in Production environment. Google's merchantId: https://developers.google.com/pay/api/web/guides/test-and-deploy/deploy-production-environment#obtain-your-merchantID
+        },
+        });
+        googlePayComponent
+            .isAvailable()
+            .then(() => {
+                googlePayComponent.mount("#googlepay-container");
+            })
+            .catch(e => {
+                //Google Pay is not available
+                console.log("Google Pay is not available");
+                console.log(e);
+            });
+
+        document.getElementById("selfButton").addEventListener('click', function () {
+            googlePayComponent.submit();
+        });
+
+    };
+    createCheckout();
+
+</script>
+</html>
