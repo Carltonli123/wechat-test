@@ -4,7 +4,7 @@ const port = 80
 const bodyParser = require("body-parser")
 const fs = require('fs')
 const path = require('path')
-const crypto = require('crypto');
+const HmacCheck = require('./utils/hmaccheck');
 
 //view engine
 app.set('view engine', 'ejs');
@@ -27,42 +27,9 @@ app.get('/netease-game-club', (req, res) => {
 })
 
 //webhook
-app.post('/adyen/notify',(req,res) =>{
+app.post('/adyen/notify', HmacCheck.isHmacVerified, (req,res,next) =>{
 
-     console.log(JSON.stringify(req.body, null, 4)+",\r\n")
-
-    const HmacKey = "5435E68D78DBA40A43833F11CC73901F0B43A2BFCE7863A4CDCEB5E760E3F6E7";
-
-     function ifExist(obj){
-       return typeof obj != "undefined" ? obj : "";
-     }
-
-  var payload = ifExist(req.body.notificationItems[0].NotificationRequestItem.pspReference) +
-    ":" + ifExist(req.body.notificationItems[0].NotificationRequestItem.originalReference) +
-    ":" + ifExist(req.body.notificationItems[0].NotificationRequestItem.merchantAccountCode) +
-    ":" + ifExist(req.body.notificationItems[0].NotificationRequestItem.merchantReference) +
-    ":" + ifExist(req.body.notificationItems[0].NotificationRequestItem.amount.value) +
-    ":" + ifExist(req.body.notificationItems[0].NotificationRequestItem.amount.currency) +
-    ":" + ifExist(req.body.notificationItems[0].NotificationRequestItem.eventCode) +
-    ":" + ifExist(req.body.notificationItems[0].NotificationRequestItem.success);
-
-  console.log(payload);
-
-  function calculateHmac(data, key){
-     const rawKey = Buffer.from(key, "hex");
-     return crypto.createHmac("sha256", rawKey).update(data, "utf8").digest("base64");
-  }
-
-  console.log(calculateHmac(payload, HmacKey));
-  console.log(req.body.notificationItems[0].NotificationRequestItem.additionalData.hmacSignature);
-  
-  function validateHMAC(){
-    const expectedSign = calculateHmac(payload, HmacKey);
-    const merchantSign = req.body.notificationItems[0].NotificationRequestItem.additionalData.hmacSignature;
-    return expectedSign === merchantSign;
-  }
-
-  if (validateHMAC()){
+    console.log(JSON.stringify(req.body, null, 4)+",\r\n")
 
     if (checkIfIsTransEvent(req.body.notificationItems[0].NotificationRequestItem.success)) {
       writeToLogs(__dirname + "/views/logs/transactionEvents.log", req.body);
@@ -74,13 +41,6 @@ app.post('/adyen/notify',(req,res) =>{
       writeToLogs(__dirname + "/views/logs/otherEvents.log", req.body);
     };
 
-  }else{
-    console.log("this is not a secure webhook message");
-    writeToLogs(__dirname + "/views/logs/otherEvents.log", "this is not a secure webhook message");
-    res.send("this is not a secure webhook message");
-  }
-
-  
      //response
      res.send("[accepted]" );
 })
