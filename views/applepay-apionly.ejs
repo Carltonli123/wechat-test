@@ -33,7 +33,10 @@
             //     }else{
             //         console.log("we cannot make payments");
             //     }
-            // })
+            // }).catch(function(error){
+            //     console.log('there is no active card in your apple wallet');
+            //     console.log(error);
+            // });
             if (ApplePaySession.canMakePayments()) {
                 console.log(" we can make payments!");
                 document.getElementById('applepay-button-container').innerHTML = '<apple-pay-button buttonstyle="black" type="buy" locale="en-US" onclick="finishPayment()"></apple-pay-button>';
@@ -54,7 +57,7 @@
             var session = new ApplePaySession(1, request);
             session.onvalidatemerchant = function (event) {
                 logSessionInteraction("Validate Merchant Requested");
-                var fakeMerchantSession = {
+                var MerchantSession = {
                     "epochTimestamp": 1691981455550,
                     "expiresAt": 1691985055550,
                     "merchantSessionIdentifier": "SSHF06FAF5AE95E47128E2EABFE738FC41E_916523AAED1343F5BC5815E12BEE9250AFFDC1A17C46B0DE5A943F0F94927C24",
@@ -67,19 +70,19 @@
                     "retries": 0,
                     "pspId": "2EA0321F0542938B9AA687C38C75DDAFC46786E1EE87800727BCA7155C44A0C3"
                 };
-                session.completeMerchantValidation(fakeMerchantSession);
+                session.completeMerchantValidation(MerchantSession);
             };
             session.oncancel = function (event) {
-                logSessionInteraction("Payment Cancelled");
+                console.log("Payment Cancelled");
             }
 
             session.onshippingcontactselected = function (event) {
-                logSessionInteraction("Shipping Contact Selected");
+                console.log("Shipping Contact Selected");
                 session.completeShippingContactSelection(123, [], {}, {});
             };
 
             session.onpaymentauthorized = function (event) {
-                logSessionInteraction("Payment Authorized by User");
+                console.log("Payment Authorized by User");
                 session.completePayment();
             };
 
