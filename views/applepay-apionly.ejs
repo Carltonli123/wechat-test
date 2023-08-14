@@ -13,9 +13,14 @@
         }
     </style>
     <script src="https://applepay.cdn-apple.com/jsapi/v1/apple-pay-sdk.js"></script>
-
+     <script>
+        if (window.ApplePaySession) {
+                // The Apple Pay JS API is available.
+                console.log("applePay session is available.")
+            }
+     </script>
 </head>
 <body>
-    <apple-pay-button buttonstyle="black" type="buy" locale="el-GR"></apple-pay-button>
+    <apple-pay-button buttonstyle="black" type="buy" locale="en-US"></apple-pay-button>
 </body>
 </html>
