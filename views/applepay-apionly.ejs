@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+</head>
+    <body>
+        <div id="applepay-button-container"></div>
+    </body>
     <title>Document</title>
     <style>
         apple-pay-button {
@@ -13,11 +18,11 @@
         }
     </style>
     <script src="https://applepay.cdn-apple.com/jsapi/v1/apple-pay-sdk.js"></script>
-     <script>
+    <script>
 
         if (window.ApplePaySession) {
-                // The Apple Pay JS API is available.
-                console.log("applePay session is available.")
+            // The Apple Pay JS API is available.
+            console.log("applePay session is available.")
 
             var merchantIdentifier = '000000000209496';
             // var promise = ApplePaySession.canMakePaymentsWithActiveCard(merchantIdentifier);
@@ -29,15 +34,15 @@
             //         console.log("we cannot make payments");
             //     }
             // })
-            if(ApplePaySession.canMakePayments()){
-                    console.log(" we can make payments!");
-                    document.getElementById('applepay-button-container').innerHTML = '<apple-pay-button buttonstyle="black" type="buy" locale="en-US" onclick="completeMerchantValid()"></apple-pay-button>';          
-            }else{
+            if (ApplePaySession.canMakePayments()) {
+                console.log(" we can make payments!");
+                document.getElementById('applepay-button-container').innerHTML = '<apple-pay-button buttonstyle="black" type="buy" locale="en-US" onclick="completeMerchantValid()"></apple-pay-button>';
+            } else {
                 console.log("we cannot make payments");
             }
         };
 
-        function completeMerchantValid(){
+        function completeMerchantValid() {
             ApplePaySession.completeMerchantValidation({
                 "epochTimestamp": 1691981455550,
                 "expiresAt": 1691985055550,
@@ -52,11 +57,7 @@
                 "pspId": "2EA0321F0542938B9AA687C38C75DDAFC46786E1EE87800727BCA7155C44A0C3"
             });
         };
-       
+
 
     </script>
-</head>
-    <body>
-        <div id="applepay-button-container"></div>
-    </body>
 </html>
