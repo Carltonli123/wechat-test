@@ -92,6 +92,10 @@ app.get('/applepay-apionly', (req, res) => {
   res.render('applepay-apionly');
 })
 
+app.get('/applepay-component', (req, res) => {
+  res.render('applepaycomponent');
+})
+
 
 //googlepay page
 app.get('/pm/googlepay',(req,res) =>{
