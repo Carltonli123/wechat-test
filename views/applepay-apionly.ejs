@@ -14,20 +14,27 @@
     </style>
     <script src="https://applepay.cdn-apple.com/jsapi/v1/apple-pay-sdk.js"></script>
      <script>
+
         if (window.ApplePaySession) {
                 // The Apple Pay JS API is available.
                 console.log("applePay session is available.")
 
             var merchantIdentifier = '000000000209496';
-            var promise = ApplePaySession.canMakePaymentsWithActiveCard(merchantIdentifier);
-            promise.then(function (canMakePayments) {
-                if (canMakePayments){
+            // var promise = ApplePaySession.canMakePaymentsWithActiveCard(merchantIdentifier);
+            // promise.then(function (canMakePayments) {
+            //     if (canMakePayments){
+            //         console.log(" we can make payments!");
+            //         document.getElementById('applepay-button-container').innerHTML = '<apple-pay-button buttonstyle="black" type="buy" locale="en-US" onclick="completeMerchantValid()"></apple-pay-button>';
+            //     }else{
+            //         console.log("we cannot make payments");
+            //     }
+            // })
+            if(ApplePaySession.canMakePayments()){
                     console.log(" we can make payments!");
-                    document.getElementById('applepay-button-container').innerHTML = '<apple-pay-button buttonstyle="black" type="buy" locale="en-US" onclick="completeMerchantValid()"></apple-pay-button>';
-                }else{
-                    console.log("we cannot make payments");
-                }
-            })
+                    document.getElementById('applepay-button-container').innerHTML = '<apple-pay-button buttonstyle="black" type="buy" locale="en-US" onclick="completeMerchantValid()"></apple-pay-button>';          
+            }else{
+                console.log("we cannot make payments");
+            }
         };
 
         function completeMerchantValid(){
