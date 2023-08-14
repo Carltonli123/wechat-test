@@ -87,6 +87,12 @@ app.get('/adyen/notify',(req,res) =>{
   res.send('the webhook is working');
 })
 
+//applepay page
+app.get('/applepay-apionly', (req, res) => {
+  res.render('applepay-apionly');
+})
+
+
 //googlepay page
 app.get('/pm/googlepay',(req,res) =>{
   res.render('neteast-game-club/googlepay');
