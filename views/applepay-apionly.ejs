@@ -22,8 +22,9 @@
     <script>
 
         function showTheLogs(text){
-            
-            document.getElementById('log-section').appendChild("<div>"+text+"</div>");
+            var div = document.createElement("div");
+            div.innerHTML = text;
+            document.getElementById('log-section').appendChild(div);
         };
 
         if (window.ApplePaySession) {
@@ -47,6 +48,8 @@
             // } else {
             //     console.log("we cannot make payments");
             // }
+        }else{
+            showTheLogs("there is no AppleSession");
         };
 
         function finishPayment() {
