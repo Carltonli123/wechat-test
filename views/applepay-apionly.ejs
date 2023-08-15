@@ -7,6 +7,7 @@
 </head>
     <body>
         <div id="applepay-button-container"></div>
+        <div id="log-section"></div>
     </body>
   
     <style>
@@ -20,23 +21,26 @@
     <script src="https://applepay.cdn-apple.com/jsapi/v1/apple-pay-sdk.js"></script>
     <script>
 
+        function showTheLogs(text){
+            
+            document.getElementById('log-section').appendChild("<div>"+text+"</div>");
+        };
+
         if (window.ApplePaySession) {
             // The Apple Pay JS API is available.
-            console.log("applePay session is available.")
+            showTheLogs("applePay session is available.")
 
             var merchantIdentifier = '000000000209496';
             var promise = ApplePaySession.canMakePaymentsWithActiveCard(merchantIdentifier);
             promise.then(function (canMakePayments) {
                 if (canMakePayments){
-                    console.log(" we can make payments!");
+                    showTheLogs(" we can make payments!");
                     document.getElementById('applepay-button-container').innerHTML = '<apple-pay-button buttonstyle="black" type="buy" locale="en-US" onclick="completeMerchantValid()"></apple-pay-button>';
                 }else{
-                    console.log("we cannot make payments");
+                    showTheLogs("we cannot make payments");
+                    showTheLogs("probably because your Apply wallet does not have a valid credit card");
                 }
-            }).catch(function(error){
-                console.log('there is no active card in your apple wallet');
-                console.log(error);
-            });
+            })
             // if (ApplePaySession.canMakePayments()) {
             //     console.log(" we can make payments!");
             //     document.getElementById('applepay-button-container').innerHTML = '<apple-pay-button buttonstyle="black" type="buy" locale="en-US" onclick="finishPayment()"></apple-pay-button>';
@@ -56,7 +60,7 @@
             
             var session = new ApplePaySession(1, request);
             session.onvalidatemerchant = function (event) {
-                logSessionInteraction("Validate Merchant Requested");
+                showTheLogs("Validate Merchant Requested");
                 var MerchantSession = {
                     "epochTimestamp": 1691981455550,
                     "expiresAt": 1691985055550,
@@ -73,17 +77,18 @@
                 session.completeMerchantValidation(MerchantSession);
             };
             session.oncancel = function (event) {
-                console.log("Payment Cancelled");
+                showTheLogs("Payment Cancelled");
             }
 
             session.onshippingcontactselected = function (event) {
-                console.log("Shipping Contact Selected");
+                showTheLogs("Shipping Contact Selected");
                 session.completeShippingContactSelection(123, [], {}, {});
             };
 
             session.onpaymentauthorized = function (event) {
-                console.log("Payment Authorized by User");
+                showTheLogs("Payment Authorized by User");
                 session.completePayment();
+                showTheLogs(event);
             };
 
             session.begin();
