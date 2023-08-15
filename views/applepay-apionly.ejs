@@ -36,7 +36,7 @@
             promise.then(function (canMakePayments) {
                 if (canMakePayments){
                     showTheLogs(" we can make payments!");
-                    document.getElementById('applepay-button-container').innerHTML = '<apple-pay-button buttonstyle="black" type="buy" locale="en-US" onclick="completeMerchantValid()"></apple-pay-button>';
+                    document.getElementById('applepay-button-container').innerHTML = '<apple-pay-button buttonstyle="black" type="buy" locale="en-US" onclick="finishPayment()"></apple-pay-button>';
                 }else{
                     showTheLogs("we cannot make payments");
                     showTheLogs("probably because your Apply wallet does not have a valid credit card");
