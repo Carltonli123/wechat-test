@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const port = 80
 const bodyParser = require("body-parser")
+const request = require('request')
 const fs = require('fs')
 const path = require('path')
 const HmacCheck = require('./utils/hmaccheck');
@@ -93,7 +94,35 @@ app.get('/applepay-apionly', (req, res) => {
 })
 
 app.get('/applepay-component', (req, res) => {
-  res.render('applepaycomponent');
+
+  var requestBody = JSON.stringify({
+    "merchantAccount": "TestMerchant",
+    "amount": {
+      "value": 5,
+      "currency": "USD"
+    },
+    "returnUrl": "https://www.baidu.com",
+    "reference": "YOUR_PAYMENT_REFERENCE",
+    "countryCode": "NL"
+  })
+  
+  var options = {
+    'method': 'POST',
+    'url': 'https://7cc06625ff786a83-TestCompany-checkout-live.adyenpayments.com/checkout/v69/sessions',
+    'headers': {
+      'Content-Type': 'application/json',
+      'X-API-Key': 'AQEthmfxJonHYxVEw0m/n3Q5qf3VfI5eGbBFVXVXyGG8WrqW0bsxH4w8q7WrwquWEMFdWw2+5HzctViMSCJMYAc=-KbwBH0iWPM5UtILAsCuA9o1RPKF8Fnagi4uX8euIbgU=-Aaw^}j4?#,{+^uxk'
+    },
+    body: requestBody
+
+  };
+  request(options, function (error, response) {
+    if (error) throw new Error(error);
+    var result = JSON.parse(response.body);
+    console.log(result);
+    res.render('applepaycomponent', {result:result});
+  });
+  
 })
 
 

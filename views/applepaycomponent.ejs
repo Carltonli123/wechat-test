@@ -28,61 +28,22 @@
                 sessionData:""
         };
 
-        function getSession(){
-
-            var myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-
-            var raw = JSON.stringify({
-                "merchantAccount": "TestMerchant",
-                "amount": {
-                    "value": 5,
-                    "currency": "USD"
-                },
-                "returnUrl": "https://www.baidu.com",
-                "reference": "YOUR_PAYMENT_REFERENCE",
-                "countryCode": "NL"
-            });
-
-            var requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-                redirect: 'follow'
-            };
-
-            fetch("http://localhost:80/sessions", requestOptions)
-            .then(response => {
-                showTheLogs('below is the response')
-                showTheLogs(response);
-                showTheLogs('below is the response.text()')
-                showTheLogs(response.text())
-            })
-            .then(result => {
-                showTheLogs(result);
-                console.log(result);
-            })
-            .catch(error => console.log('error', error));
-        }
-
-        getSession();
-
-
         const configuration = {
 
-                showPayButton: true,
-                locale: "en-US",
-                environment: 'live', // Change to 'live' for the live environment.
-                clientKey: 'live_M3V7DUCE7BFA7EGN7YWS3A66XIPAJZFL', // Public key used for client-side authentication: https://docs.adyen.com/development-resources/client-side-authentication
+            showPayButton: true,
+            locale: "en-US",
+            environment: 'live', // Change to 'live' for the live environment.
+            clientKey: 'live_M3V7DUCE7BFA7EGN7YWS3A66XIPAJZFL', // Public key used for client-side authentication: https://docs.adyen.com/development-resources/client-side-authentication
                 // analytics: {
                 //   enabled: true // Set to false to not send analytics data to Adyen.
                 // },
 
-                // for session
-                session: {
-                    id: "CS8D8D943D400F8DE4", // Unique identifier for the payment session.
-                    sessionData: "Ab02b4c0!BQABAgBTIZb/daqo4wRz2PTZAJnYnwGaPn9OAKBSgSi5bDRuhufKZe0660kadAi5AJtPJ09U/7ga+il+EkX3UyKGSCqzzhlyT5wrdkiD8lv6irRX5XgW28UXRoQcDo4FgrzQW+qNbkyDPwgTr4G7hQDk+lUndA0nvcHG+dVnaFHVn/j3sd4P1U6Sny20iIghhtZF2nbViN6Y+3zBCImlshtOOoHRBO3etQRV7xA6QCrmlLHkEwzzP7Bzq6sY8dl8T3Eb/pAjxqXqj9fFAJMUn4q6ux6q7rqPNZOTA8UzgGMbrQw0VN0LnFBXOssEcLG1xi/CrSPOcHFry2Wh3bYfSwDbCbsKiH46nRiXULcgGREFuGE2KCyEdCDHcF6RmooRkdsC7AHo9vq3b+GNe45l9AId/hDlWCDN8YjZVKD7ytEHyXYvF+Z/U+E01gcIhAQfMxU+Okz9MseqW05RuqlEpWb+iMdwUmKl/eFuTsqSRyqfnEgL2tCKyGzXiu051uRueSWmjoFoYFwa5bjnFOdN9i7mijT48k20ISXhfQqd9d99tGW25XlKtMG9wYcSBmWuf5rNhnEX//I04dzdDBsm+n3uRC2sND+6d/M0c0CutD07azgO8fA0ofaPGBLluWnA9yNjTZtaSAbwHSqci+hnCAI35wwrSf1es2J5sw9VK0ZcNcaNgwwNl7W8t0IG56m+VBkASnsia2V5IjoiQUYwQUFBMTAzQ0E1MzdFQUVEODdDMjRERDUzOTA5QjgwQTc4QTkyM0UzODIzRDY4REFDQzk0QjlGRjgzMDVEQyJ9QVLGei/VgjpUecv65dlx3NuUIEQy8LBaOsUDDpRYGxolRbi3DB2/gf55Ugss37ZO0ybFqUyXQug4ha02qvTFt8T5Oe4IenPUyyRhW8l1mkb0jjU8OFUEwme6s+CZF7+apNrFzc2i5YO3rEFFhqN4VAY4X1QNTI4DkcrjtJ8qc1EuTtBD/QUXJktmWJuNjUgqfijKOmv/mrzXEs2HRNO69ObjKMHW/xuXqNxqhbTkGuJPNfmKdZoqiYhRrih8Y5YKS/6M0IFF4WgTlmBR8afSU+L2LG9iUuJ3BpWB73gZmRcS1KkAMHRhd37naoP0oPVXozS4Lmeun/Z1KAQkc5fr+j3Et5IFaIRx/sPw9vkloW7gxFLE9t1zG36DRcVt0Y7Ba9AnYzbJ3seVa3kZ9kKPvhWjzQNPfng++OYXaJ5l0maKzokOh+1SDHCAwdq9MIA/M09SRZMqXfpw0ni0ptTnJrXs2brdoLKkdEOY/AIvbi8sNH5dSS0G0jtT5B4PqS4Re8+aSzqsvA7TTRA5hY45fGdaobXXtiGBUKb4wBHFoaPzYhRi0GI8i8gL077Ki1jv/9b+r/ZA1RhtAosKeA=="
-                },
+           
+            // for session
+            session: {
+                id: '<%= result.id %>', // Unique identifier for the payment session.
+                sessionData: '<%= result.sessionData %>'
+            },
 
             onPaymentCompleted: (result, component) => {
                 showTheLogs('below is for onPaymentCompleted:');
