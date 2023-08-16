@@ -113,6 +113,9 @@ app.get('/googlepay-component', (req, res) => {
 var payments = require("./routes/payments");
 app.use(payments);
 
+var sessions = require("./routes/sessions");
+app.use(sessions);
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
