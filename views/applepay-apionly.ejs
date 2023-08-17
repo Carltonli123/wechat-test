@@ -31,7 +31,7 @@
             // The Apple Pay JS API is available.
             showTheLogs("applePay session is available.")
 
-            var merchantIdentifier = '000000000209496';
+            var merchantIdentifier = '000000000200301';
             var promise = ApplePaySession.canMakePaymentsWithActiveCard(merchantIdentifier);
             promise.then(function (canMakePayments) {
                 if (canMakePayments){
@@ -90,7 +90,8 @@
 
             session.onpaymentauthorized = function (event) {
                 showTheLogs("Payment Authorized by User");
-                session.completePayment();
+                const ApplePayPayment = session.completePayment();
+                console.log(ApplePayPayment.token);
                 showTheLogs(event);
             };
 
