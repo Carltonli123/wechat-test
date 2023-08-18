@@ -108,8 +108,9 @@ app.get('/applepay-apionly', (req, res) => {
   };
   request(options, function (error, response) {
     if (error) throw new Error(error);
-    console.log(response.body.toString('ascii'));
-    res.render('applepay-apionly', { merchantSession: response.body.toString('ascii') });
+    console.log(Buffer.from(JSON.parse(response.body).data, 'base64').toString('ascii'));
+    var sessionData = Buffer.from(JSON.parse(response.body).data, 'base64').toString('ascii');
+    res.render('applepay-apionly', { merchantSession: sessionData });
   });
   
 })
