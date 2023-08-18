@@ -77,9 +77,8 @@
                     "retries": 0,
                     "pspId": "60C7BFB6ED1F8194FE20382D0C5FE6CB1FC861134FCC3C33800BF3404FAF5EEF"
                 };
-                var result = session.completeMerchantValidation(MerchantSession);
-                showTheLogs("result of validating the merchant");
-                showTheLogs(result);
+                session.completeMerchantValidation(MerchantSession);
+          
 
             };
             session.oncancel = function (event) {
