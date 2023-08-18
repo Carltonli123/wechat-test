@@ -80,8 +80,7 @@
 
             session.onpaymentmethodselected = function (event) {
                 showTheLogs('starting session.onpaymentmethodselected');
-                showTheLogs(event.paymentMethod);
-                session.completePaymentMethodSelection();
+        
             };
 
             session.onpaymentauthorized = function (event) {
