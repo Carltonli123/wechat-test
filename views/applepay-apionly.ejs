@@ -77,7 +77,10 @@
                     "retries": 0,
                     "pspId": "60C7BFB6ED1F8194FE20382D0C5FE6CB1FC861134FCC3C33800BF3404FAF5EEF"
                 };
-                session.completeMerchantValidation(MerchantSession);
+                var result = session.completeMerchantValidation(MerchantSession);
+                showTheLogs("result of validating the merchant");
+                showTheLogs(result);
+
             };
             session.oncancel = function (event) {
                 showTheLogs("Payment Cancelled");
@@ -86,6 +89,11 @@
             session.onshippingcontactselected = function (event) {
                 showTheLogs("Shipping Contact Selected");
                 session.completeShippingContactSelection(123, [], {}, {});
+            };
+
+            session.onpaymentmethodselected = function (event) {
+                showTheLogs('starting session.onpaymentmethodselected');
+                showTheLogs(event);
             };
 
             session.onpaymentauthorized = function (event) {
