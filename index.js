@@ -90,7 +90,28 @@ app.get('/adyen/notify',(req,res) =>{
 
 //applepay page
 app.get('/applepay-apionly', (req, res) => {
-  res.render('applepay-apionly');
+
+  var options = {
+    'method': 'POST',
+    'url': 'https://7cc06625ff786a83-TestCompany-checkout-live.adyenpayments.com/checkout/v70/applePay/sessions',
+    'headers': {
+      'Content-Type': 'application/json',
+      'X-API-Key': 'AQEthmfxJonHYxVEw0m/n3Q5qf3VfI5eGbBFVXVXyGG8WrqW0bsxH4w8q7WrwquWEMFdWw2+5HzctViMSCJMYAc=-KbwBH0iWPM5UtILAsCuA9o1RPKF8Fnagi4uX8euIbgU=-Aaw^}j4?#,{+^uxk',
+      'Cookie': 'JSESSIONID=8382754C44886DBFC65BA7D12F0BCA73.live1212e'
+    },
+    body: JSON.stringify({
+      "displayName": "Carlton /s Shop",
+      "domainName": "carlton-service-44763-8-1315678741.sh.run.tcloudbase.com",
+      "merchantIdentifier": "000000000200301"
+    })
+
+  };
+  request(options, function (error, response) {
+    if (error) throw new Error(error);
+    console.log(response.body.toString('ascii'));
+    res.render('applepay-apionly', { merchantSession: response.body.toString('ascii') });
+  });
+  
 })
 
 app.get('/applepay-component', (req, res) => {
