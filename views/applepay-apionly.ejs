@@ -93,7 +93,7 @@
 
             session.onpaymentmethodselected = function (event) {
                 showTheLogs('starting session.onpaymentmethodselected');
-                showTheLogs(event);
+                showTheLogs(event.paymentMethod);
                 session.completePaymentMethodSelection();
             };
 
