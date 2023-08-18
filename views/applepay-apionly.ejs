@@ -92,6 +92,7 @@
                 showTheLogs("Payment Authorized by User");
                 const ApplePayPayment = session.completePayment();
                 console.log(ApplePayPayment.token);
+                showTheLogs(ApplePayPayment);
                 showTheLogs(event);
             };
 
