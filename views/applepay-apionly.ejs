@@ -94,6 +94,7 @@
             session.onpaymentmethodselected = function (event) {
                 showTheLogs('starting session.onpaymentmethodselected');
                 showTheLogs(event);
+                session.completePaymentMethodSelection();
             };
 
             session.onpaymentauthorized = function (event) {
