@@ -25,39 +25,47 @@
         analytics: {
             enabled: true // Set to false to not send analytics data to Adyen.
         },
-        onSubmit: (state, component) => {
-            console.log(state);
 
-            var paymentBody = new Object();
-
-            var myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-            myHeaders.append("X-API-Key", "AQEyhmfxLorGaRxCw0m/n3Q5qf3VaY9UCJ1+XWZe9W27jmlZig5yljrb4hAKiRMRHKZD1gEQwV1bDb7kfNy1WIxIIkxgBw==-IuMYHQhMEAfxSLsqFoYmmXtqzsf1t2SkYYk+VbCSJt8=-ezDyzfvKK$YX764R");
-
-            paymentBody.amount = {
-                "value": 700,
-                "currency": "USD"
-            };
-
-            paymentBody.paymentMethod = state.data.paymentMethod;
-            paymentBody.browserInfo = state.data.browserInfo;
-
-            paymentBody.reference = "order reference";
-            paymentBody.merchantAccount = "AdyenTechSupport_CarltonTest_TEST";
-            paymentBody.returnUrl = "https://www.baidu.com";
-
-            var requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: JSON.stringify(paymentBody),
-                redirect: 'follow'
-            };
-
-            fetch("http://localhost:80/payments", requestOptions)
-                .then(response => response.text())
-                .then(result => console.log(result))
-                .catch(error => console.log('error', error));
+        session: {
+            id: '<%= result.id %>', // Unique identifier for the payment session.
+            sessionData: '<%= result.sessionData %>'
         },
+
+
+        // onSubmit: (state, component) => {
+        //     console.log("below is the onsubmit data");
+        //     console.log(state.data);
+
+        //     var paymentBody = new Object();
+
+        //     var myHeaders = new Headers();
+        //     myHeaders.append("Content-Type", "application/json");
+        //     myHeaders.append("X-API-Key", "AQEyhmfxLorGaRxCw0m/n3Q5qf3VaY9UCJ1+XWZe9W27jmlZig5yljrb4hAKiRMRHKZD1gEQwV1bDb7kfNy1WIxIIkxgBw==-IuMYHQhMEAfxSLsqFoYmmXtqzsf1t2SkYYk+VbCSJt8=-ezDyzfvKK$YX764R");
+
+        //     paymentBody.amount = {
+        //         "value": 700,
+        //         "currency": "USD"
+        //     };
+
+        //     paymentBody.paymentMethod = state.data.paymentMethod;
+        //     paymentBody.browserInfo = state.data.browserInfo;
+
+        //     paymentBody.reference = "order reference";
+        //     paymentBody.merchantAccount = "AdyenTechSupport_CarltonTest_TEST";
+        //     paymentBody.returnUrl = "https://www.baidu.com";
+
+        //     var requestOptions = {
+        //         method: 'POST',
+        //         headers: myHeaders,
+        //         body: JSON.stringify(paymentBody),
+        //         redirect: 'follow'
+        //     };
+
+        //     fetch("http://localhost:80/payments", requestOptions)
+        //         .then(response => response.text())
+        //         .then(result => console.log(result))
+        //         .catch(error => console.log('error', error));
+        // },
         onPaymentCompleted: (result, component) => {
             console.info(result, component);
         },

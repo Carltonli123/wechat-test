@@ -65,6 +65,8 @@
             session.onvalidatemerchant = function (event) {
                 showTheLogs("Validate Merchant Requested");
                 var MerchantSession = '<%= merchantSession %>';
+                showTheLogs('below is the MerchantSession');
+                showTheLogs(JSON.stringify(MerchantSession, null, 4))
                 session.completeMerchantValidation(MerchantSession);
           
 
@@ -79,7 +81,7 @@
             };
 
             session.onpaymentmethodselected = function (event) {
-                showTheLogs('starting session.onpaymentmethodselected');
+                showTheLogs('the paymentMethod that has been selected');
                 showTheLogs(event.paymentMethod);
         
             };

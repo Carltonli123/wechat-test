@@ -158,7 +158,32 @@ app.get('/googlepay-apionly', (req,res) =>{
 })
 
 app.get('/googlepay-component', (req, res) => {
-  res.render('googlepaycomponent');
+
+  var options = {
+    'method': 'POST',
+    'url': 'https://checkout-test.adyen.com/v68/sessions',
+    'headers': {
+      'Content-Type': 'application/json',
+      'X-API-Key': 'AQEyhmfxLorGaRxCw0m/n3Q5qf3VaY9UCJ1+XWZe9W27jmlZig5yljrb4hAKiRMRHKZD1gEQwV1bDb7kfNy1WIxIIkxgBw==-LkkZe9+JfR2vz39IxgEUX0nssD5NDktbGfH31I0GoM0=-L&GCzb9tnt#Z#jXm'
+    },
+    body: JSON.stringify({
+      "merchantAccount": "AdyenTechSupport_CarltonTest_TEST",
+      "amount": {
+        "value": 10000,
+        "currency": "USD"
+      },
+      "returnUrl": "https://www.baidu.com",
+      "reference": "YOUR_PAYMENT_REFERENCE",
+      "countryCode": "NL"
+    })
+
+  };
+  request(options, function (error, response) {
+    if (error) throw new Error(error);
+    var result = JSON.parse(response.body);
+    console.log(result);
+    res.render('googlepaycomponent', { result: result });
+  });
 })
 
 app.get('/.well-known/apple-developer-merchantid-domain-association',(req,res) => {
