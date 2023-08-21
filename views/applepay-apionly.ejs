@@ -71,7 +71,7 @@
                 showTheLogs(typeof(MerchantSession));
                 try {
 
-                    session.completeMerchantValidation(MerchantSession);                 
+                    session.completeMerchantValidation(JSON.parse(MerchantSession));                 
                 } catch (error) {
                     showTheLogs("there is an error");
                     showTheLogs(JSON.stringify(error, null, 4))
