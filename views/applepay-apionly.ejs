@@ -69,10 +69,19 @@
                 showTheLogs(JSON.stringify(MerchantSession, null, 4));
                 showTheLogs('below is the type of MerchantSession');
                 showTheLogs(typeof(MerchantSession));
-                session.completeMerchantValidation(MerchantSession);
+                try {
+
+                    session.completeMerchantValidation(MerchantSession);                 
+                } catch (error) {
+                    showTheLogs("there is an error");
+                    showTheLogs(JSON.stringify(error, null, 4))
+                    
+                }
+
           
 
             };
+
             session.oncancel = function (event) {
                 showTheLogs("Payment Cancelled");
             }
