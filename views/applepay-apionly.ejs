@@ -121,7 +121,7 @@
                 console.log("Below is the applepay token:");
                 console.log(event.payment.token);
 
-                var ApplePayToken = event.payment.token;
+                var ApplePayToken = event.payment.token.paymentData;
 
                 //call the payments endpoint
                 var myHeaders = new Headers();
