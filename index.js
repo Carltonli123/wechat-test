@@ -100,7 +100,7 @@ app.get('/applepay-apionly', (req, res) => {
       'Cookie': 'JSESSIONID=8382754C44886DBFC65BA7D12F0BCA73.live1212e'
     },
     body: JSON.stringify({
-      "displayName": "Carlton /s Shop",
+      "displayName": "Carlton s Shop",
       "domainName": "carlton-service-44763-8-1315678741.sh.run.tcloudbase.com",
       "merchantIdentifier": "000000000200301"
     })
