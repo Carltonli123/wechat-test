@@ -64,7 +64,7 @@
             var session = new ApplePaySession(1, request);
             session.onvalidatemerchant = function (event) {
                 showTheLogs("Validate Merchant Requested");
-                var MerchantSession = '<%= merchantSession %>';
+                var MerchantSession = '<%- merchantSession %>';
                 showTheLogs('below is the MerchantSession');
                 showTheLogs(JSON.stringify(MerchantSession, null, 4));
                 console.log('below is the MerchantSession');
