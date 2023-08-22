@@ -65,10 +65,10 @@
             session.onvalidatemerchant = function (event) {
                 showTheLogs("Validate Merchant Requested");
                 var MerchantSession = '<%= merchantSession %>';
-                showTheLogs('below is the MerchantSession');
-                showTheLogs(JSON.stringify(MerchantSession, null, 4));
-                showTheLogs('below is the type of MerchantSession');
-                showTheLogs(typeof(MerchantSession));
+                // showTheLogs('below is the MerchantSession');
+                // showTheLogs(JSON.stringify(MerchantSession, null, 4));
+                // showTheLogs('below is the type of MerchantSession');
+                // showTheLogs(typeof(MerchantSession));
                 showTheLogs('below is the type of MerchantSession after json parse');
                 showTheLogs(typeof(JSON.parse(MerchantSession)));
                 showTheLogs('below is the object');
