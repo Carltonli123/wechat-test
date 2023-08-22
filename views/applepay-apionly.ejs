@@ -32,22 +32,22 @@
             showTheLogs("applePay session is available.")
 
             var merchantIdentifier = '000000000200301';
-            // var promise = ApplePaySession.canMakePaymentsWithActiveCard(merchantIdentifier);
-            // promise.then(function (canMakePayments) {
-            //     if (canMakePayments){
-            //         showTheLogs(" we can make payments!");
-            //         document.getElementById('applepay-button-container').innerHTML = '<apple-pay-button buttonstyle="black" type="buy" locale="en-US" onclick="finishPayment()"></apple-pay-button>';
-            //     }else{
-            //         showTheLogs("we cannot make payments");
-            //         showTheLogs("probably because your Apply wallet does not have a valid credit card");
-            //     }
-            // })
-            if (ApplePaySession.canMakePayments()) {
-                console.log(" we can make payments!");
-                document.getElementById('applepay-button-container').innerHTML = '<apple-pay-button buttonstyle="black" type="buy" locale="en-US" onclick="finishPayment()"></apple-pay-button>';
-            } else {
-                console.log("we cannot make payments");
-            }
+            var promise = ApplePaySession.canMakePaymentsWithActiveCard(merchantIdentifier);
+            promise.then(function (canMakePayments) {
+                if (canMakePayments){
+                    showTheLogs(" we can make payments!");
+                    document.getElementById('applepay-button-container').innerHTML = '<apple-pay-button buttonstyle="black" type="buy" locale="en-US" onclick="finishPayment()"></apple-pay-button>';
+                }else{
+                    showTheLogs("we cannot make payments");
+                    showTheLogs("probably because your Apply wallet does not have a valid credit card");
+                }
+            })
+            // if (ApplePaySession.canMakePayments()) {
+            //     console.log(" we can make payments!");
+            //     document.getElementById('applepay-button-container').innerHTML = '<apple-pay-button buttonstyle="black" type="buy" locale="en-US" onclick="finishPayment()"></apple-pay-button>';
+            // } else {
+            //     console.log("we cannot make payments");
+            // }
         }else{
             showTheLogs("there is no AppleSession");
         };
@@ -108,15 +108,48 @@
             session.onpaymentmethodselected = function (event) {
                 showTheLogs('the paymentMethod that has been selected');
                 showTheLogs(event.paymentMethod);
+                console.log('the paymentMethod that has been selected');
+                console.log(event.paymentMethod);
         
             };
 
             session.onpaymentauthorized = function (event) {
                 showTheLogs("Payment Authorized by User");
-                const ApplePayPayment = session.completePayment();
-                console.log(ApplePayPayment.token);
-                showTheLogs(ApplePayPayment);
-                showTheLogs(event);
+                console.log("Below is the applepay token:");
+                console.log(event.payment.token);
+
+                var ApplePayToken = event.payment.token;
+
+                //call the payments endpoint
+                var myHeaders = new Headers();
+                myHeaders.append("x-API-key", "AQEyhmfxLorGaRxCw0m/n3Q5qf3VaY9UCJ1+XWZe9W27jmlZig5yljrb4hAKiRMRHKZD1gEQwV1bDb7kfNy1WIxIIkxgBw==-LkkZe9+JfR2vz39IxgEUX0nssD5NDktbGfH31I0GoM0=-L&GCzb9tnt#Z#jXm");
+                myHeaders.append("content-type", "application/json");
+
+                var paymentBody = new Object();
+                paymentBody.amount = {
+                    "value": 5,
+                    "currency": "USD"
+                };
+                paymentBody.paymentMethod = {};
+                paymentBody.paymentMethod.type = "applepay";
+                paymentBody.paymentMethod.applePayToken = ApplePayToken;
+
+                paymentBody.reference = "order reference";
+                paymentBody.merchantAccount = "AdyenTechSupport_CarltonTest_TEST";
+                paymentBody.returnUrl = "https://www.baidu.com";
+
+                                                    var requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: JSON.stringify(paymentBody),
+                    redirect: 'follow'
+                };
+
+                fetch("http://localhost:80/payments", requestOptions)
+                    .then(response => response.text())
+                    .then(result => console.log(result))
+                    .catch(error => console.log('error', error));
+         
             };
 
             session.begin();
