@@ -198,6 +198,9 @@ app.use(payments);
 var sessions = require("./routes/sessions");
 app.use(sessions);
 
+var paymentslive = require("./routes/payments-live");
+app.use(paymentslive);
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
