@@ -32,22 +32,22 @@
             showTheLogs("applePay session is available.")
 
             var merchantIdentifier = '000000000200301';
-            var promise = ApplePaySession.canMakePaymentsWithActiveCard(merchantIdentifier);
-            promise.then(function (canMakePayments) {
-                if (canMakePayments){
-                    showTheLogs(" we can make payments!");
-                    document.getElementById('applepay-button-container').innerHTML = '<apple-pay-button buttonstyle="black" type="buy" locale="en-US" onclick="finishPayment()"></apple-pay-button>';
-                }else{
-                    showTheLogs("we cannot make payments");
-                    showTheLogs("probably because your Apply wallet does not have a valid credit card");
-                }
-            })
-            // if (ApplePaySession.canMakePayments()) {
-            //     console.log(" we can make payments!");
-            //     document.getElementById('applepay-button-container').innerHTML = '<apple-pay-button buttonstyle="black" type="buy" locale="en-US" onclick="finishPayment()"></apple-pay-button>';
-            // } else {
-            //     console.log("we cannot make payments");
-            // }
+            // var promise = ApplePaySession.canMakePaymentsWithActiveCard(merchantIdentifier);
+            // promise.then(function (canMakePayments) {
+            //     if (canMakePayments){
+            //         showTheLogs(" we can make payments!");
+            //         document.getElementById('applepay-button-container').innerHTML = '<apple-pay-button buttonstyle="black" type="buy" locale="en-US" onclick="finishPayment()"></apple-pay-button>';
+            //     }else{
+            //         showTheLogs("we cannot make payments");
+            //         showTheLogs("probably because your Apply wallet does not have a valid credit card");
+            //     }
+            // })
+            if (ApplePaySession.canMakePayments()) {
+                console.log(" we can make payments!");
+                document.getElementById('applepay-button-container').innerHTML = '<apple-pay-button buttonstyle="black" type="buy" locale="en-US" onclick="finishPayment()"></apple-pay-button>';
+            } else {
+                console.log("we cannot make payments");
+            }
         }else{
             showTheLogs("there is no AppleSession");
         };
