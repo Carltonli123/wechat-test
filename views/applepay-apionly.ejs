@@ -150,7 +150,12 @@
 
                 fetch("https://carlton-service-44763-8-1315678741.sh.run.tcloudbase.com/payments-live", requestOptions)
                     .then(response => response.text())
-                    .then(result => console.log(result))
+                    .then(result => {
+                        console.log(result);
+                        var status = ApplePaySession.STATUS_SUCCESS;
+                        session.completePayment(status);
+                        showTheLogs("Payment Successful!");
+                    })
                     .catch(error => console.log('error', error));
          
             };
