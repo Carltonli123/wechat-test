@@ -65,22 +65,22 @@
             session.onvalidatemerchant = function (event) {
                 showTheLogs("Validate Merchant Requested");
                 var MerchantSession = '<%- merchantSession %>';
-                showTheLogs('below is the MerchantSession');
-                showTheLogs(JSON.stringify(MerchantSession, null, 4));
-                console.log('below is the MerchantSession');
-                console.log(JSON.stringify(MerchantSession, null, 4));
-                showTheLogs('below is the type of MerchantSession');
-                showTheLogs(typeof(MerchantSession));
-                console.log('below is the type of MerchantSession');
-                console.log(typeof (MerchantSession));
-                showTheLogs('below is the type of MerchantSession after json parse');
-                showTheLogs(typeof(JSON.parse(MerchantSession)));
-                console.log('below is the type of MerchantSession after json parse');
-                console.log(typeof (JSON.parse(MerchantSession)));
-                showTheLogs('below is the object');
-                showTheLogs(JSON.stringify(JSON.parse(MerchantSession)));
-                console.log('below is the object');
-                console.log(JSON.stringify(JSON.parse(MerchantSession)));
+                // showTheLogs('below is the MerchantSession');
+                // showTheLogs(JSON.stringify(MerchantSession, null, 4));
+                // console.log('below is the MerchantSession');
+                // console.log(JSON.stringify(MerchantSession, null, 4));
+                // showTheLogs('below is the type of MerchantSession');
+                // showTheLogs(typeof(MerchantSession));
+                // console.log('below is the type of MerchantSession');
+                // console.log(typeof (MerchantSession));
+                // showTheLogs('below is the type of MerchantSession after json parse');
+                // showTheLogs(typeof(JSON.parse(MerchantSession)));
+                // console.log('below is the type of MerchantSession after json parse');
+                // console.log(typeof (JSON.parse(MerchantSession)));
+                // showTheLogs('below is the object');
+                // showTheLogs(JSON.stringify(JSON.parse(MerchantSession)));
+                // console.log('below is the object');
+                // console.log(JSON.stringify(JSON.parse(MerchantSession)));
                 try {
 
                     session.completeMerchantValidation(JSON.parse(MerchantSession));                 
