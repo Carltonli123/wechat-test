@@ -8,7 +8,7 @@
                     "authCode": "1234",
                     "cardSummary": "7777",
                     "totalFraudScore": "10",
-                    "hmacSignature": "eqKM5Q5qpYSLvMFeLYRGmz9VEe/SA+/+76JtVsXIDks=",
+                    "hmacSignature": "qwpTIu9l8Iet1tIR/Hnbf+Cczafxtr8yTpGm2NM4i5A=",
                     "NAME2": "VALUE2",
                     "NAME1": "VALUE1",
                     "fraudCheck-6-ShopperIpUsage": "10"
@@ -18,7 +18,7 @@
                     "value": 10100
                 },
                 "eventCode": "AUTHORISATION",
-                "eventDate": "2023-08-10T11:11:55+02:00",
+                "eventDate": "2023-09-05T09:43:07+02:00",
                 "merchantAccountCode": "AdyenTechSupport_CarltonTest_TEST",
                 "merchantReference": "8313842560770001",
                 "operations": [
@@ -27,7 +27,7 @@
                     "REFUND"
                 ],
                 "paymentMethod": "visa",
-                "pspReference": "K3NTVL9XV379R782",
+                "pspReference": "JLG22Z5KDNZ9Z782",
                 "reason": "1234:7777:12/2012",
                 "success": "true"
             }

@@ -6,6 +6,9 @@ const request = require('request')
 const fs = require('fs')
 const path = require('path')
 const HmacCheck = require('./utils/hmaccheck');
+const mogoFunctions =require('./model/connectToCluster.js');
+
+mogoFunctions.connectToCluster();
 
 //view engine
 app.set('view engine', 'ejs');
@@ -28,12 +31,14 @@ app.get('/netease-game-club', (req, res) => {
 })
 
 //webhook
-app.post('/adyen/notify', HmacCheck.isHmacVerified, (req,res,next) =>{
+//HmacCheck.isHmacVerified,
+app.post('/adyen/notify',  (req,res,next) =>{
 
     console.log(JSON.stringify(req.body, null, 4)+",\r\n")
 
   if (checkIfIsTransEvent(req.body.notificationItems[0].NotificationRequestItem.eventCode)) {
       writeToLogs(__dirname + "/views/logs/transactionEvents.log", req.body);
+      mogoFunctions.saveToTranslog(req.body);
     } else if (checkIfIsDisputeEvent(req.body.notificationItems[0].NotificationRequestItem.eventCode)) {
       writeToLogs(__dirname + "/views/logs/disputeEvents.log", req.body);
     } else if (checkIfIsPayoutEvent(req.body.notificationItems[0].NotificationRequestItem.eventCode)) {
