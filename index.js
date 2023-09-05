@@ -32,7 +32,7 @@ app.post('/adyen/notify', HmacCheck.isHmacVerified, (req,res,next) =>{
 
     console.log(JSON.stringify(req.body, null, 4)+",\r\n")
 
-    if (checkIfIsTransEvent(req.body.notificationItems[0].NotificationRequestItem.success)) {
+  if (checkIfIsTransEvent(req.body.notificationItems[0].NotificationRequestItem.eventCode)) {
       writeToLogs(__dirname + "/views/logs/transactionEvents.log", req.body);
     } else if (checkIfIsDisputeEvent(req.body.notificationItems[0].NotificationRequestItem.eventCode)) {
       writeToLogs(__dirname + "/views/logs/disputeEvents.log", req.body);
